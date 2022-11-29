@@ -1,0 +1,19 @@
+@import url('https://fonts.googleapis.com/css2?family=Anek+Devanagari:wght@100;200;300;400;500;600;700;800&display=swap');
+
+body,html {
+  font-family: 'Anek Devanagari', sans-serif;  
+  height: 100%;
+}
+
+.heroimage {
+  color: white;
+  background: #aaa;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center center;
+  background-blend-mode: multiply;
+  
+  .container {
+    min-height: 100vh;
+  }
+}
