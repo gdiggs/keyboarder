@@ -1,36 +1,34 @@
+import type { NextApiRequest, NextApiResponse } from 'next'
 import { base } from "../../utils/Airtable";
+import { Keyboard } from "../../utils/interfaces";
 
 const collection = require('lodash/collection');
 
-interface Keyboard {
-  keycaps: string;
-  layout: string;
-  name: string;
-  photo_url?: string;
-  switches: string;
+interface Photo {
+  url: string;
 }
 
-const getPhotoURL = function(photoField?: Object): string | null {
+const getPhotoURL = function(photoField?: Photo[]): string | undefined {
   if (photoField !== undefined) {
     return photoField[0].url;
   } else {
-    return null;
+    return undefined;
   }
 };
 
-const getAssociationName = async function(table: string, id: string): Object {
+const getAssociationName = async function(table: string, id: string): Promise<string> {
   return (await base(table).find(id)).fields.Name;
 }
 
-const getKeycaps = async function(id: string): string {
+const getKeycaps = async function(id: string): Promise<string> {
   return getAssociationName("Keycaps", id);
 }
 
-const getSwitches = async function(id: string): string {
+const getSwitches = async function(id: string): Promise<string> {
   return getAssociationName("Switches", id);
 }
 
-const getKeyboard = async function (): Keyboard {
+const getKeyboard = async function (): Promise<Keyboard> {
   const keyboards = await base("Builds").select({
     fields: ["Name", "Switches", "Layout", "Keycaps", "Photo"],
     filterByFormula: "AND(Status = 'Built', Layout != 'Macropad')"
@@ -49,7 +47,7 @@ const getKeyboard = async function (): Keyboard {
 
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse<Data>
+  res: NextApiResponse<Keyboard>
 ) {
   res.status(200).json(await getKeyboard());
 }

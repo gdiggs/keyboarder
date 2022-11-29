@@ -1,13 +1,15 @@
 import Head from 'next/head'
 import Image from 'next/image'
 
+import { ReactElement } from 'react';
+
+import { Keyboard } from "../utils/interfaces";
+
 import useSWR from 'swr';
 
 const a = require("indefinite");
 
-const fetcher = (...args) => fetch(...args).then((res) => res.json());
-
-const keyboardLayout = function(layout: string): string {
+const keyboardLayout = function(layout: string): ReactElement {
   const article = a(layout, {capitalize: true, articleOnly: true});
   return (
     <>
@@ -25,7 +27,7 @@ const divStyle = function(photoUrl?: string): Object {
 };
 
 export default function Home() {
-  const { data, error } = useSWR('/api/keyboard', fetcher)
+  const { data, error } = useSWR<Keyboard, Error>('/api/keyboard', (apiURL: string) => fetch(apiURL).then(res => res.json()))
 
   if (error) return <div>Failed to load</div>
   if (!data) return <div>Loading...</div>
