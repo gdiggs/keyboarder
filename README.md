@@ -14,7 +14,7 @@ AIRTABLE_BASE_ID=
 Then run:
 
 ```bash
-npm run dev
+npm run dev:ts
 ```
 
 Open [http://localhost:3000](http://localhost:3000).
